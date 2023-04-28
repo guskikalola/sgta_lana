@@ -9,6 +9,9 @@ import { Capacitor } from '@capacitor/core';
 //the key for the store 
 const PHOTO_STORAGE = 'photos';
 
+//ezabatu diren argazki kopuru eguneratua
+let deletedPhotoCount =0;
+
 export function usePhotoGallery() {
 
   // useState bi elementu bueltatzen ditu:
@@ -72,6 +75,7 @@ export function usePhotoGallery() {
   // Metodo honek FilesystemAPI erabilita nabigatzailean irudia gordeko du (Memory > IndexedDB > Disk > FileStorage)
   const savePicture = async (photo: Photo, fileName: string): Promise<UserPhoto> => {
     let base64Data: string;
+    let timestamp: Number = Date.now();
     // "hybrid" will detect Cordova or Capacitor;
     if (isPlatform('hybrid')) {
       const file = await Filesystem.readFile({
@@ -93,6 +97,9 @@ export function usePhotoGallery() {
       return {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+        metadata: {
+          timestamp: timestamp
+        }
       };
     } else {
       // Use webPath to display the new image instead of base64 since it's
@@ -100,6 +107,9 @@ export function usePhotoGallery() {
       return {
         filepath: fileName,
         webviewPath: photo.webPath,
+        metadata: {
+          timestamp: timestamp
+        }
       };
     }
   };
@@ -118,13 +128,37 @@ export function usePhotoGallery() {
       directory: Directory.Data,
     });
     setPhotos(newPhotos);
+    
+    let trashBadge = document.getElementsByClassName('badgeTrash')[0]
+  
+    deletedPhotoCount++
+    trashBadge.textContent=deletedPhotoCount.toString()
   };
+
+  const getPhotosByDate  = () : Map<number, UserPhoto[]> => {
+    let grouped = new Map<number, UserPhoto[]>();
+
+    photos.forEach((photo, index, array) => {
+      let timestamp = photo.metadata.timestamp;
+      let d = new Date(<number>timestamp); // Casting egin behar da. number != Number delako
+      let dGroup = new Date(d.getFullYear(),d.getMonth(),d.getDate(),0,0,0,0);
+      let key = dGroup.getTime();
+      if(grouped.has(key)) {
+        grouped.get(key)?.push(photo);
+      } else {
+        grouped.set(key, [photo]);
+      }
+
+    });
+    return grouped;
+  }
 
   return {
     photos,
     takePhoto,
     savePicture,
-    deletePhoto
+    deletePhoto,
+    getPhotosByDate
   };
 }
 
@@ -146,7 +180,20 @@ export async function base64FromPath(path: string): Promise<string> {
 }
 
 
+interface PhotoMetadata {
+  timestamp: Number;
+}
+
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
+  metadata: PhotoMetadata;
+}
+
+//Zaborra tab-a klikatzerakoan ezabatu diren argazki kopuru notifikazioa kendu 
+export function trashClick(){
+  let trashBadge = document.getElementsByClassName('badgeTrash')[0]
+  
+  deletedPhotoCount=0
+  trashBadge.textContent=''
 }

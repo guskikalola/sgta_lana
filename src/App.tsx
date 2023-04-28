@@ -7,10 +7,12 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupIonicReact
+  setupIonicReact,
+  IonItem,
+  IonBadge
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { image, square, triangle,trashBinOutline } from 'ionicons/icons';
+import { image, square, triangle,trashBinOutline, logoWindows, helpOutline, personOutline } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -34,6 +36,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { trashClick } from './hooks/usePhotoGallery';
+
 setupIonicReact();
 
 const App: React.FC = () => (
@@ -55,17 +59,20 @@ const App: React.FC = () => (
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
+          <IonTabButton tab="tab1" href="/tab1" onClick={()=>trashClick()}>
           <IonIcon icon={trashBinOutline}></IonIcon >
-            <IonLabel>Tab 1</IonLabel>
+          <IonItem>
+            <IonLabel>Trash</IonLabel>
+            <IonBadge color="danger" className='badgeTrash'></IonBadge>
+          </IonItem>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon aria-hidden="true" icon={image} />
             <IonLabel>Photos</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+            <IonIcon aria-hidden="true" icon={personOutline} />
+            <IonLabel>About Us</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
