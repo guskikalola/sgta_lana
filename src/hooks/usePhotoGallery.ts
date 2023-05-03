@@ -19,7 +19,6 @@ export function usePhotoGallery() {
   // setPhotos() : argazkien zerrenda eguneratzeko metodoa
   const [photos, setPhotos] = useState<UserPhoto[]>([]);
 
-
   // Hook honek konponente bat kargatzen den bakoitzean exekutatuko da
   // Parametro bezela array bat pasata, array-ko elementu bakoitza eguneratzean funtzioa deituko da.
   // Array hutsa pasata, behin bakarrik exekutatuko da.
@@ -114,6 +113,32 @@ export function usePhotoGallery() {
     }
   };
 
+  const sendPhotoToTrash = (photo: UserPhoto) => {
+    const newPhotos = photos.map(item => {
+      if (item.filepath == photo.filepath) {
+        item.toDelete = true;
+      }
+      return item;
+    })
+    setPhotos(newPhotos);
+    Preferences.set({ key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
+  };
+
+  const restorePhoto = (photo: UserPhoto) => {
+    const newPhotos = photos.map(item => {
+      if (item.filepath == photo.filepath) {
+        item.toDelete = false;
+      }
+      return item;
+    })
+    setPhotos(newPhotos);
+    Preferences.set({ key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
+  }
+
+  const getDeletedPhotos = () => {
+    return photos.filter(photo => photo.toDelete);
+  }
+
   const deletePhoto = async (photo: UserPhoto) => {
     // Remove this photo from the Photos reference data array
     const newPhotos = photos.filter((p) => p.filepath !== photo.filepath);
@@ -158,6 +183,9 @@ export function usePhotoGallery() {
     takePhoto,
     savePicture,
     deletePhoto,
+    sendPhotoToTrash,
+    getDeletedPhotos,
+    restorePhoto,
     getPhotosByDate
   };
 }
@@ -188,6 +216,7 @@ export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
   metadata: PhotoMetadata;
+  toDelete?: boolean;
 }
 
 //Zaborra tab-a klikatzerakoan ezabatu diren argazki kopuru notifikazioa kendu 

@@ -5,5 +5,15 @@ hr {
 }
 
 .photo {
-    max-width: 465px;
+    max-width: 465px !important;
+}
+
+.it2{
+    position: absolute;
+    right: 0px;
+    top: 5px;
+}
+
+.ion-item {
+    --ion-item-background: transparent;
 }

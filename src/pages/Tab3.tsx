@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonAvatar, IonLabel, IonCard, IonCardContent, IonCardSubtitle
-, IonCardTitle, IonCardHeader, IonGrid, IonRow, IonCol } from '@ionic/react';
+, IonCardTitle, IonCardHeader, IonGrid, IonRow, IonCol, IonButton, IonPopover } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab3.css';
 
@@ -9,6 +9,12 @@ const Tab3: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>About Us</IonTitle>
+          <IonItem class="it3">
+            <IonButton id="trigger-button3">Help</IonButton>
+            <IonPopover trigger="trigger-button3">
+              <IonContent className="ion-padding">Orri honetan webgune honen deskribapena ageri da, egileen informazioarekin batera.</IonContent>
+            </IonPopover>
+          </IonItem>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -35,6 +41,8 @@ const Tab3: React.FC = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
+            </IonCol>
+            <IonCol>
               <IonCard>
                   <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                   <IonCardHeader>
@@ -54,7 +62,7 @@ const Tab3: React.FC = () => {
                     <IonCardSubtitle>Disenatzailea eta garatzailea</IonCardSubtitle>
                   </IonCardHeader>
                   <IonCardContent>
-                    Email:
+                    Email: mmartin253@ikasle.ehu.eus
                   </IonCardContent>
                </IonCard>
             </IonCol>
@@ -81,6 +89,8 @@ const Tab3: React.FC = () => {
                     Email: dpintado001@ikasle.ehu.eus
                   </IonCardContent>
                </IonCard>
+            </IonCol>
+            <IonCol>
             </IonCol>
           </IonRow>
         </IonGrid>

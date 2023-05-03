@@ -19,7 +19,10 @@ import {
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
-  IonButton
+  IonButton,
+  IonPopover,
+  IonButtons,
+  IonItem
 } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab2.css';
@@ -27,7 +30,7 @@ import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
 
 const Tab2: React.FC = () => {
 
-  const { photos, takePhoto, deletePhoto, getPhotosByDate } = usePhotoGallery();
+  const { takePhoto, getPhotosByDate, sendPhotoToTrash } = usePhotoGallery();
 
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
@@ -36,14 +39,26 @@ const Tab2: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Photo Gallery</IonTitle>
+          <IonItem key="patata" class="it2">
+            <IonButton id="trigger-button2">Help</IonButton>
+            <IonPopover trigger="trigger-button2">
+              <IonContent className="ion-padding">Orri honetan argazkiak atera ditzakezu. Behin aterata, dataren arabera ordenatuko dira. 
+              Gainera argazkiak ezabatu ditzazkezu; argazkiak ezabatzean zabortegira mugituko dira.</IonContent>
+            </IonPopover>
+          </IonItem>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonContent>
           {
             // Lortu argazkiak dataren arabera. Mapa egitura: Map<timestamp,UserPhoto[]>
-            Array.from(getPhotosByDate().entries()).sort(entry => -entry[0]).map((entry) => { // Array batera pasa .map erabiltzeko
+            Array.from(getPhotosByDate().entries()).sort(entry => -entry[0]).filter(entry => { // TODO: Mirar este codigo repetido del filter
               const [date, photos] = entry;
+              const filteredPhotos = photos.filter(photo => !photo.toDelete);
+              return filteredPhotos.length > 0;
+            }).map((entry) => { // Array batera pasa .map erabiltzeko
+              const [date, photos] = entry;
+              const filteredPhotos = photos.filter(photo => !photo.toDelete);
               return (
                 <IonGrid>
                   <IonRow class="ion-justify-content-center">
@@ -53,7 +68,7 @@ const Tab2: React.FC = () => {
                   </IonRow>
                   <IonRow>
                     {
-                      photos.map((photo) => { // Uneko dataren argazki bakoitzeko IonCard elementu bat sortu ( barruan irudia izango duena )
+                      filteredPhotos.map((photo) => { // Uneko dataren argazki bakoitzeko IonCard elementu bat sortu ( barruan irudia izango duena )
                         return (
                           <IonCol size="6" key={photo.filepath} class="photo">
                             <IonCard>
@@ -92,7 +107,7 @@ const Tab2: React.FC = () => {
           </IonFab>
         </IonContent>
         <IonActionSheet
-        header={`Delete ${photoToDelete?.filepath}? This action cannot be undone`}
+        header={`Send ${photoToDelete?.filepath} to trash?`}
           isOpen={!!photoToDelete}
           buttons={[
             {
@@ -101,7 +116,7 @@ const Tab2: React.FC = () => {
               icon: trash,
               handler: () => {
                 if (photoToDelete) {
-                  deletePhoto(photoToDelete);
+                  sendPhotoToTrash(photoToDelete);
                   setPhotoToDelete(undefined);
                 }
               },

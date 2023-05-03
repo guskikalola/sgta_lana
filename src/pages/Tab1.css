@@ -1,0 +1,9 @@
+.it1{
+    position: absolute;
+    right: 0px;
+    top: 5px;
+}
+
+.ion-item {
+    --ion-item-background: transparent;
+}

@@ -61,9 +61,10 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1" onClick={()=>trashClick()}>
           <IonIcon icon={trashBinOutline}></IonIcon >
-          <IonItem>
+          <IonItem class='ion-item'>
+          
             <IonLabel>Trash</IonLabel>
-            <IonBadge color="danger" className='badgeTrash'></IonBadge>
+            <IonBadge color="danger" className='badgeTrash e-badge-dot'></IonBadge>
           </IonItem>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
