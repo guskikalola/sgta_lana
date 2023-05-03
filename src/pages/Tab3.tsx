@@ -39,10 +39,8 @@ const Tab3: React.FC = () => {
          </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow>
-            <IonCol>
-            </IonCol>
-            <IonCol>
+          <IonRow class="ion-justify-content-center">
+            <IonCol class="pertsona">
               <IonCard>
                   <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                   <IonCardHeader>
@@ -54,7 +52,7 @@ const Tab3: React.FC = () => {
                   </IonCardContent>
                </IonCard>
             </IonCol>
-            <IonCol>
+            <IonCol class="pertsona">
               <IonCard>
                   <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                   <IonCardHeader>
@@ -66,7 +64,7 @@ const Tab3: React.FC = () => {
                   </IonCardContent>
                </IonCard>
             </IonCol>
-            <IonCol>
+            <IonCol class="pertsona">
               <IonCard>
                   <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                   <IonCardHeader>
@@ -78,7 +76,7 @@ const Tab3: React.FC = () => {
                   </IonCardContent>
                </IonCard>
             </IonCol>
-            <IonCol>
+            <IonCol class="pertsona">
               <IonCard>
                   <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                   <IonCardHeader>
@@ -89,8 +87,6 @@ const Tab3: React.FC = () => {
                     Email: dpintado001@ikasle.ehu.eus
                   </IonCardContent>
                </IonCard>
-            </IonCol>
-            <IonCol>
             </IonCol>
           </IonRow>
         </IonGrid>
