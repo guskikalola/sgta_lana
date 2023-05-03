@@ -71,13 +71,13 @@ const App: React.FC = () => {
               <IonIcon icon={trashBinOutline}></IonIcon >
               <IonItem class='ion-item'>
 
-                <IonLabel>Trash</IonLabel>
+                <IonLabel>Zaborra</IonLabel>
                 <IonBadge color="danger" className='badgeTrash e-badge-dot'>{photoGallery.getDeletedPhotos().length > 0 ? photoGallery.getDeletedPhotos().length : ''}</IonBadge>
               </IonItem>
             </IonTabButton>
             <IonTabButton tab="tab2" href="/tab2">
               <IonIcon aria-hidden="true" icon={image} />
-              <IonLabel>Photos</IonLabel>
+              <IonLabel>Argazkiak</IonLabel>
             </IonTabButton>
             <IonTabButton tab="tab3" href="/tab3">
               <IonIcon aria-hidden="true" icon={personOutline} />

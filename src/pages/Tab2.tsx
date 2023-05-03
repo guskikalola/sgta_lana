@@ -30,11 +30,11 @@ import { UserPhoto } from '../hooks/usePhotoGallery';
 import { PhotoAppContext } from '../App';
 
 const Tab2: React.FC = () => {
-  
+
   const photoGallery = useContext(PhotoAppContext);
-  if(photoGallery == null) return (<b>Errorea</b>); // Type-script hard-typed izanda, hau eginda "null izan daiteke" errorea kentzen du
-   
-  const { takePhoto, getPhotosByDate, sendPhotoToTrash } = photoGallery;
+  if (photoGallery == null) return (<b>Errorea</b>); // Type-script hard-typed izanda, hau eginda "null izan daiteke" errorea kentzen du
+
+  const { takePhoto, getPhotosByDate, sendPhotoToTrash, photos } = photoGallery;
 
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
@@ -42,17 +42,17 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Photo Gallery</IonTitle>
+          <IonTitle>Argazkiak</IonTitle>
           <IonItem key="patata" class="it2">
             <IonButton id="trigger-button2">Help</IonButton>
             <IonPopover trigger="trigger-button2">
-              <IonContent className="ion-padding">Orri honetan argazkiak atera ditzakezu. Behin aterata, dataren arabera ordenatuko dira. 
-              Gainera argazkiak ezabatu ditzazkezu; argazkiak ezabatzean zabortegira mugituko dira.</IonContent>
+              <IonContent className="ion-padding">Orri honetan argazkiak atera ditzakezu. Behin aterata, dataren arabera ordenatuko dira.
+                Gainera argazkiak ezabatu ditzazkezu; argazkiak ezabatzean zabortegira mugituko dira.</IonContent>
             </IonPopover>
           </IonItem>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen >
         <IonContent>
           {
             // Lortu argazkiak dataren arabera. Mapa egitura: Map<timestamp,UserPhoto[]>
@@ -82,16 +82,16 @@ const Tab2: React.FC = () => {
                                   <IonGrid>
                                     <IonCol>
                                       <IonRow>
-                                        <b>File</b>: {photo.filepath}
+                                        <b>Fitxategia</b>: {photo.filepath}
                                       </IonRow>
                                       <IonRow>
-                                        <b>Date</b>: {new Date(photo.metadata.timestamp.valueOf()).toLocaleString()}
-                                      </IonRow> 
+                                        <b>Data</b>: {new Date(photo.metadata.timestamp.valueOf()).toLocaleString()}
+                                      </IonRow>
                                     </IonCol>
                                   </IonGrid>
                                 </IonCardSubtitle>
                               </IonCardHeader>
-                              <IonButton fill="clear" color="danger" onClick={() => setPhotoToDelete(photo)}><span><IonIcon icon={trashBinOutline}/> Delete</span></IonButton>
+                              <IonButton fill="clear" color="danger" onClick={() => setPhotoToDelete(photo)}><span><IonIcon icon={trashBinOutline} /> Bidali zaborrera</span></IonButton>
                             </IonCard>
                           </IonCol>)
                       })
@@ -104,6 +104,9 @@ const Tab2: React.FC = () => {
             })
 
           }
+          <div style={{ "display": photos.filter(photo => !photo.toDelete).length > 0 ? "none" : "block" }}>
+            <h1>Ez dituzu argazkirik.</h1>
+          </div>
           <IonFab vertical="bottom" horizontal="center" slot="fixed">
             <IonFabButton onClick={() => takePhoto()}>
               <IonIcon icon={camera}></IonIcon>
@@ -111,11 +114,11 @@ const Tab2: React.FC = () => {
           </IonFab>
         </IonContent>
         <IonActionSheet
-        header={`Send ${photoToDelete?.filepath} to trash?`}
+          header={`Bidali ${photoToDelete?.filepath} zaborrera?`}
           isOpen={!!photoToDelete}
           buttons={[
             {
-              text: 'Delete',
+              text: 'Ezabatu',
               role: 'destructive',
               icon: trash,
               handler: () => {
@@ -126,7 +129,7 @@ const Tab2: React.FC = () => {
               },
             },
             {
-              text: 'Cancel',
+              text: 'Atzera egin',
               icon: close,
               role: 'cancel',
             },
