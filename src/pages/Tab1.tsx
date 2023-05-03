@@ -3,13 +3,15 @@ import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonT
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
 import { UserPhoto, usePhotoGallery } from '../hooks/usePhotoGallery';
-import { camera, trash, close, trashBinOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react';
+import { shieldOutline, trash, close, trashBinOutline } from 'ionicons/icons';
+import { useContext, useEffect, useState } from 'react';
 
+import { PhotoAppContext } from '../App';
 
 const Tab1: React.FC = () => {
-
-  const { getDeletedPhotos, deletePhoto, getPhotosByDate, restorePhoto} = usePhotoGallery();
+  const photoGallery = useContext(PhotoAppContext);
+  if(photoGallery == null) return (<b>Errorea</b>); // Type-script hard-typed izanda, hau eginda "null izan daiteke" errorea kentzen du
+  const { getDeletedPhotos, deletePhoto, getPhotosByDate, restorePhoto} = photoGallery;
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
   return (
@@ -53,7 +55,7 @@ const Tab1: React.FC = () => {
                       </IonCardSubtitle>
                     </IonCardHeader>
                     <IonButton fill="clear" color="danger" onClick={() => setPhotoToDelete(photo)}><span><IonIcon icon={trashBinOutline} /> Delete</span></IonButton>
-                    <IonButton fill="clear" color="danger" onClick={() => restorePhoto(photo)}><span><IonIcon icon={trashBinOutline} /> Restore</span></IonButton>
+                    <IonButton fill="clear" color="tertiary" onClick={() => restorePhoto(photo)}><span><IonIcon icon={shieldOutline} /> Restore</span></IonButton>
                   </IonCard>
                 </IonCol>)
             })
@@ -79,10 +81,7 @@ const Tab1: React.FC = () => {
           {
             text: 'Cancel',
             icon: close,
-            role: 'cancel',
-            handler: () => {
-              alert(getDeletedPhotos().length)
-            }
+            role: 'cancel'
           },
         ]}
         onDidDismiss={() => setPhotoToDelete(undefined)}

@@ -9,8 +9,6 @@ import { Capacitor } from '@capacitor/core';
 //the key for the store 
 const PHOTO_STORAGE = 'photos';
 
-//ezabatu diren argazki kopuru eguneratua
-let deletedPhotoCount =0;
 
 export function usePhotoGallery() {
 
@@ -156,8 +154,6 @@ export function usePhotoGallery() {
     
     let trashBadge = document.getElementsByClassName('badgeTrash')[0]
   
-    deletedPhotoCount++
-    trashBadge.textContent=deletedPhotoCount.toString()
   };
 
   const getPhotosByDate  = () : Map<number, UserPhoto[]> => {
@@ -219,10 +215,11 @@ export interface UserPhoto {
   toDelete?: boolean;
 }
 
+/* 
 //Zaborra tab-a klikatzerakoan ezabatu diren argazki kopuru notifikazioa kendu 
 export function trashClick(){
   let trashBadge = document.getElementsByClassName('badgeTrash')[0]
   
-  deletedPhotoCount=0
   trashBadge.textContent=''
 }
+*/ 

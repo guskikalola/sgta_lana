@@ -12,7 +12,7 @@ import {
   IonBadge
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { image, square, triangle,trashBinOutline, logoWindows, helpOutline, personOutline } from 'ionicons/icons';
+import { image, square, triangle, trashBinOutline, logoWindows, helpOutline, personOutline } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -36,49 +36,59 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import { trashClick } from './hooks/usePhotoGallery';
+import { /* trashClick, */ usePhotoGallery } from './hooks/usePhotoGallery';
+import { createContext } from 'react';
+import { UserPhoto } from './hooks/usePhotoGallery';
+import { Photo } from '@capacitor/camera';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+export const PhotoAppContext = createContext<ReturnType<typeof usePhotoGallery> | null>(null);
+
+const App: React.FC = () => {
+  const photoGallery = usePhotoGallery();
+  return (<IonApp>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1" onClick={()=>trashClick()}>
-          <IonIcon icon={trashBinOutline}></IonIcon >
-          <IonItem class='ion-item'>
-          
-            <IonLabel>Trash</IonLabel>
-            <IonBadge color="danger" className='badgeTrash e-badge-dot'></IonBadge>
-          </IonItem>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={image} />
-            <IonLabel>Photos</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={personOutline} />
-            <IonLabel>About Us</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+      <PhotoAppContext.Provider value={photoGallery}>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/tab1">
+              <Tab1 />
+            </Route>
+            <Route exact path="/tab2">
+              <Tab2 />
+            </Route>
+            <Route path="/tab3">
+              <Tab3 />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/tab1" />
+            </Route>
+          </IonRouterOutlet>
+
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="tab1" href="/tab1" /* onClick={() => trashClick()} */ >
+              <IonIcon icon={trashBinOutline}></IonIcon >
+              <IonItem class='ion-item'>
+
+                <IonLabel>Trash</IonLabel>
+                <IonBadge color="danger" className='badgeTrash e-badge-dot'>{photoGallery.getDeletedPhotos().length > 0 ? photoGallery.getDeletedPhotos().length : ''}</IonBadge>
+              </IonItem>
+            </IonTabButton>
+            <IonTabButton tab="tab2" href="/tab2">
+              <IonIcon aria-hidden="true" icon={image} />
+              <IonLabel>Photos</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab3" href="/tab3">
+              <IonIcon aria-hidden="true" icon={personOutline} />
+              <IonLabel>About Us</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </PhotoAppContext.Provider>
+
     </IonReactRouter>
-  </IonApp>
-);
+  </IonApp>)
+};
 
 export default App;

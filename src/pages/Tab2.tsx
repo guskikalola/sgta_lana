@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { camera, trash, close, trashBinOutline } from 'ionicons/icons';
 import {
   IonContent,
@@ -26,11 +26,15 @@ import {
 } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab2.css';
-import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
+import { UserPhoto } from '../hooks/usePhotoGallery';
+import { PhotoAppContext } from '../App';
 
 const Tab2: React.FC = () => {
-
-  const { takePhoto, getPhotosByDate, sendPhotoToTrash } = usePhotoGallery();
+  
+  const photoGallery = useContext(PhotoAppContext);
+  if(photoGallery == null) return (<b>Errorea</b>); // Type-script hard-typed izanda, hau eginda "null izan daiteke" errorea kentzen du
+   
+  const { takePhoto, getPhotosByDate, sendPhotoToTrash } = photoGallery;
 
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
