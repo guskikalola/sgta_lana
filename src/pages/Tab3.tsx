@@ -29,7 +29,7 @@ const Tab3: React.FC = () => {
             <IonCol>
             </IonCol>
             <IonCol>
-            <h6>IKA irakasleko lau irakasle gara, eta React framework-aren bidez honako webgunea garatu dugu. Bertan, argazkiak atera daitezke, 
+            <h6>IKA irakasgaiko lau ikasle gara, eta React framework-aren bidez honako webgunea garatu dugu. Bertan, argazkiak atera daitezke, 
           orri nagusia; eta bertan, atera dituzun argazki guztien bilduma ageriko da. Gainera, argazki horiek ezabatu ditzakezu, argazkian klik
           eginez. Argazkia ezabatzean, zaborra orrira joango da.
         </h6>
