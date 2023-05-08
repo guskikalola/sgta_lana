@@ -56,7 +56,7 @@ const Tab2: React.FC = () => {
         <IonContent>
           {
             // Lortu argazkiak dataren arabera. Mapa egitura: Map<timestamp,UserPhoto[]>
-            Array.from(getPhotosByDate().entries()).sort(entry => -entry[0]).filter(entry => { // TODO: Mirar este codigo repetido del filter
+            Array.from(getPhotosByDate().entries()).sort((a,b) => b[0] - a[0]).filter(entry => { // TODO: Mirar este codigo repetido del filter
               const [date, photos] = entry;
               const filteredPhotos = photos.filter(photo => !photo.toDelete);
               return filteredPhotos.length > 0;
